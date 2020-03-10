@@ -8,36 +8,33 @@
 <template>
 <div>
     <div class="alert alert-danger" v-if="has_error">
-        <p>Error, unable to retrieve the user list.</p>
+        <p>Error, unable to retrieve the role list.</p>
     </div>
 
     <div class="d-flex w-100 justify-content-end ">
-        <button class="btn btn-primary" @click="create">Create User</button>
+        <button class="btn btn-primary" @click="create">Create Role</button>
     </div>
 
     <table class="table table-hover my-2">
         <thead>
           <tr>
-            <th scope="col">Name</th>
-            <th scope="col">Email</th>
             <th scope="col">Role</th>
-            <th scope="col">Created At</th>
+            <th scope="col">Description</th>
+            <th scope="col">Date Created</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="user in users" v-bind:key="user.id" style="margin-bottom: 5px;" @click="show(user)">
-            <td>{{ user.name }}</td>
-            <td>{{ user.email }}</td>
-            <td>{{ user.role.name }}</td>
-            <td>{{ user.created_at}}</td>
+          <tr v-for="role in roles" v-bind:key="role.id" style="margin-bottom: 5px;" @click="show(role)">
+            <td>{{ role.name }}</td>
+            <td>{{ role.description }}</td>
+            <td>{{ role.created_at}}</td>
           </tr>
         </tbody>
         <tfoot>
             <tr>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
                 <th scope="col">Role</th>
-                <th scope="col">Created At</th>
+                <th scope="col">Description</th>
+                <th scope="col">Date Created</th>
             </tr>
         </tfoot>
     </table>
@@ -47,7 +44,7 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Update User</h5>
+            <h5 class="modal-title">Update Role</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -57,25 +54,17 @@
               <div class="form-group row">
                 <label for="staticEmail" class="col-sm-3 col-form-label">Name</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="staticName" v-model="user.name" required>
+                  <input type="text" class="form-control" id="staticName" v-model="role.name" required>
                 </div>
               </div>
               <div class="form-group row">
-                <label for="staticEmail" class="col-sm-3 col-form-label">Email Address</label>
+                <label for="staticEmail" class="col-sm-3 col-form-label">Description</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="staticEmail" v-model="user.email" required>
+                  <input type="text" class="form-control" id="staticEmail" v-model="role.description" required>
                 </div>
               </div>
 
-              <div class="form-group row">
-                <label for="staticEmail" class="col-sm-3 col-form-label">Role</label>
-                <div class="col-sm-9">
-                    <select class="form-control" v-model="user.role_id">
-                      <option v-for="role in roles" v-bind:value="role.id">{{ role.name }}</option>
 
-                    </select>
-                </div>
-              </div>
 
             </form>
           </div>
@@ -94,7 +83,7 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Create User</h5>
+            <h5 class="modal-title">Create Role</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -104,35 +93,29 @@
               <div class="form-group row">
                 <label for="staticEmail" class="col-sm-3 col-form-label">Name</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="staticName" v-model="user.name" required>
+                  <input type="text" class="form-control" id="staticName" v-model="role.name" required>
                 </div>
               </div>
               <div class="form-group row">
-                <label for="staticEmail" class="col-sm-3 col-form-label">Email Address</label>
+                <label for="staticEmail" class="col-sm-3 col-form-label">Description</label>
                 <div class="col-sm-9">
-                  <input type="text" class="form-control" id="staticEmail" v-model="user.email" required>
+                  <input type="text" class="form-control" id="staticEmail" v-model="role.description" required>
                 </div>
               </div>
 
-              <div class="form-group row">
-                <label for="staticEmail" class="col-sm-3 col-form-label">Role</label>
-                <div class="col-sm-9">
-                    <select class="form-control" v-model="user.role_id">
-                      <option v-for="role in roles" v-bind:value="role.id">{{ role.name }}</option>
 
-                    </select>
-                </div>
-              </div>
 
             </form>
           </div>
-          <div class="modal-footer">
+          <div class="modal-footer d-flex justify-content-between">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             <button type="button" class="btn btn-primary" @click="store">Save</button>
           </div>
         </div>
       </div>
     </div>
+
+
 
 </div>
 </template>
@@ -141,30 +124,19 @@
     data() {
       return {
         has_error: false,
-        users: null,
-        user: {
-            email: '',
+        roles: null,
+        role:{
             name: '',
-            role_id: 1,
+            description: ''
         },
-        roles: null
+        errors: {}
       }
     },
     mounted() {
-      this.getUsers()
+      this.getRoles()
     },
     methods: {
-      getUsers() {
-        this.$http({
-          url: `users`,
-          method: 'GET'
-        })
-            .then((res) => {
-              this.users = res.data.users
-            }, () => {
-              this.has_error = true
-            })
-
+      getRoles() {
         this.$http({
           url: `roles`,
           method: 'GET'
@@ -177,56 +149,55 @@
       },
 
       create(){
-        this.user = {}
+        this.role = {}
         $('#createModal').modal('toggle')
       },
 
+      show(data){
+        this.role = data;
+        $('#updateModal').modal('toggle')
+      },
+
       store(){
-         this.$http({
-            url: `users`,
-            method: 'POST',
-            data: this.user
+        this.$http({
+          url: `roles`,
+          method: 'POST',
+          data: this.role
         })
-         .then((resp) => {
+          .then((res) => {
             $('#createModal').modal('toggle')
-            this.getUsers()
-         }, () => {
-            console.log('error')
-         })
+            this.getRoles()
+          }, (err) => {
+            console.log(err)
+          })
       },
 
       update(){
         this.$http({
-            url: `users`,
-            method: 'PUT',
-            data: this.user
+          url: `roles`,
+          method: 'PUT',
+          data: this.role
         })
-         .then((resp) => {
+          .then((res) => {
             $('#updateModal').modal('toggle')
-            this.getUsers()
-         }, () => {
-            console.log('error')
-         })
-
+            this.getRoles()
+          }, () => {
+            console.log('errors')
+          })
       },
 
       destroy(){
         this.$http({
-            url: `users`,
-            method: 'DELETE',
-            data: this.user
+          url: `roles`,
+          method: 'DELETE',
+          data: this.role
         })
-         .then((resp) => {
+          .then((res) => {
             $('#updateModal').modal('toggle')
-            this.getUsers()
-         }, () => {
-            console.log('error')
-         })
-      },
-
-      show(data){
-        this.user = data;
-        $('#updateModal').modal('toggle')
+            this.getRoles()
+          }, () => {
+            console.log('errors')
+          })
       }
     }
   }

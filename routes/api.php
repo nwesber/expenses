@@ -27,6 +27,13 @@ Route::group(['middleware' => 'auth:api'], function(){
     // Users
     Route::get('users', 'UserController@index')->middleware('isAdmin');
     Route::get('users/{id}', 'UserController@show')->middleware('isAdminOrSelf');
+    Route::post('users','UserController@store')->middleware('isAdmin');
+    Route::put('users','UserController@update')->middleware('isAdmin');
+    Route::delete('users', 'UserController@destroy')->middleware('isAdmin');
 
+    // Roles
     Route::get('roles', 'RoleController@index')->middleware('isAdmin');
+    Route::post('roles', 'RoleController@store')->middleware('isAdmin');
+    Route::put('roles', 'RoleController@update')->middleware('isAdmin');
+    Route::delete('roles', 'RoleController@destroy')->middleware('isAdmin');
 });

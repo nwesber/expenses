@@ -4,6 +4,7 @@ import Register from './pages/Register'
 import Login from './pages/Login'
 import Dashboard from './pages/user/Dashboard'
 import UserList from './pages/admin/UserList'
+import RoleList from './pages/admin/RoleList'
 
 // Routes
 const routes = [
@@ -45,6 +46,14 @@ const routes = [
         path: '/users',
         name: 'admin.users',
         component: UserList,
+        meta: {
+            auth: { roles: 2, redirect: { name: 'login' }, forbiddenRedirect: '/403' }
+        }
+    },
+    {
+        path: '/roles',
+        name: 'admin.roles',
+        component: RoleList,
         meta: {
             auth: { roles: 2, redirect: { name: 'login' }, forbiddenRedirect: '/403' }
         }

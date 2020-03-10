@@ -1,17 +1,17 @@
 <template>
     <div id="wrapper">
 
-     
+
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-       
+
           <router-link :to="{name: 'home'}" class="sidebar-brand d-flex align-items-center justify-content-center">
-            <div class="sidebar-brand-text mx-1">Expense Tracker</div>          
+            <div class="sidebar-brand-text mx-1">Expense Tracker</div>
           </router-link>
 
-      
+
           <hr class="sidebar-divider my-0">
 
-         
+
           <li class="nav-item active">
               <router-link  :to="{ name : 'home' }" class="nav-link">
                   <i class="fas fa-fw fa-tachometer-alt"></i>
@@ -19,7 +19,7 @@
               </router-link>
           </li>
 
-      
+
           <hr class="sidebar-divider">
           <div class="sidebar-heading">
             Users
@@ -30,14 +30,14 @@
               <span>User Management</span>
             </a>
             <div id="collapseOne" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-              <div class="bg-white py-2 collapse-inner rounded" v-for="(route, key) in routes.admin" v-bind:key="route.path">
-                <router-link  :to="{ name : route.path }" :key="key" class="collapse-item">
+              <div class="bg-white py-2 collapse-inner rounded">
+                <router-link  :to="{ name : route.path }" :key="key" class="collapse-item" v-for="(route, key) in routes.admin" v-bind:key="route.path">
                     {{route.name}}
                 </router-link>
               </div>
             </div>
           </li>
-          
+
           <hr class="sidebar-divider">
           <div class="sidebar-heading">
             Expenses
@@ -66,7 +66,7 @@
               </button>
 
               <ul class="navbar-nav ml-auto">
-         
+
                 <li class="nav-item dropdown no-arrow" v-if="$auth.check()">
                   <a href="#" @click.prevent="$auth.logout()">Logout</a>
                 </li>
@@ -121,13 +121,17 @@
             {
               name: 'Users',
               path: 'admin.users'
+            },
+            {
+                name: 'Roles',
+                path: 'admin.roles'
             }
           ]
         }
       }
     },
     components: {
-      
+
     }
   }
 </script>
