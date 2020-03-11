@@ -16,17 +16,13 @@ class CheckIsAdminOrSelf
      */
     public function handle($request, Closure $next)
     {
-        $requestedUserId = $request->route()->parameter('id');
-
-        if(
-            Auth::user()->role === 2 ||
-            Auth::user()->id == $requestedUserId
-        ) {
+    
+        if(Auth::user()) {
             return $next($request);
         }
 
         else {
-            return response()->json(['error' => 'Unauthorized'], 403);
+            return response()->json(['error' => 'unauthorized'], 403);
         }
     }
 }

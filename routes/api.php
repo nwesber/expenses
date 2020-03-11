@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('dashboard', 'DashboardController@index')->name('dashboard');
+
 Route::prefix('auth')->group(function () {
     Route::post('register', 'AuthController@register')->name('auth.register');
     Route::post('login', 'AuthController@login')->name('auth.login');
@@ -36,4 +38,16 @@ Route::group(['middleware' => 'auth:api'], function(){
     Route::post('roles', 'RoleController@store')->middleware('isAdmin');
     Route::put('roles', 'RoleController@update')->middleware('isAdmin');
     Route::delete('roles', 'RoleController@destroy')->middleware('isAdmin');
+
+    //Expense Categories
+    Route::get('categories', 'ExpenseCategoryController@index')->middleware('isAdminOrSelf');
+    Route::post('categories', 'ExpenseCategoryController@store')->middleware('isAdmin');
+    Route::put('categories', 'ExpenseCategoryController@update')->middleware('isAdmin');
+    Route::delete('categories', 'ExpenseCategoryController@destroy')->middleware('isAdmin');
+
+    //Expenses
+    Route::get('expenses', 'ExpensesController@index')->middleware('isAdminOrSelf');
+    Route::post('expenses', 'ExpensesController@store')->middleware('isAdminOrSelf');
+    Route::put('expenses', 'ExpensesController@update')->middleware('isAdminOrSelf');
+    Route::delete('expenses', 'ExpensesController@destroy')->middleware('isAdminOrSelf');
 });

@@ -5,6 +5,8 @@ import Login from './pages/Login'
 import Dashboard from './pages/user/Dashboard'
 import UserList from './pages/admin/UserList'
 import RoleList from './pages/admin/RoleList'
+import CategoriesList from './pages/admin/CategoriesList'
+import ExpenseList from './pages/admin/ExpenseList'
 
 // Routes
 const routes = [
@@ -56,6 +58,24 @@ const routes = [
         component: RoleList,
         meta: {
             auth: { roles: 2, redirect: { name: 'login' }, forbiddenRedirect: '/403' }
+        }
+    },
+    {
+        path: '/expense-categories',
+        name: 'admin.expense.categories',
+        component: CategoriesList,
+        meta: {
+            auth: { roles: 2, redirect: { name: 'login' }, forbiddenRedirect: '/403' }
+        }
+    },
+
+    // global routes
+    {
+        path: '/expenses',
+        name: 'expense.index',
+        component: ExpenseList,
+        meta: {
+            auth: true
         }
     },
 ]

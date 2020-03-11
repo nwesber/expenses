@@ -1,6 +1,7 @@
 <?php
 
 use App\User;
+use App\Role;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -26,6 +27,16 @@ class DatabaseSeeder extends Seeder
             'email' => 'user@test.com',
             'password' => Hash::make('secret'),
             'role_id' => 1
+        ]);
+
+        Role::create([
+            'name' => 'User',
+            'description' => 'User'
+        ]);
+
+        Role::create([
+            'name' => 'Admin',
+            'description' => 'admin'
         ]);
     }
 }

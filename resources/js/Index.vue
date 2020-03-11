@@ -20,8 +20,8 @@
           </li>
 
 
-          <hr class="sidebar-divider">
-          <div class="sidebar-heading">
+          <hr class="sidebar-divider" v-if="$auth.check()">
+          <div class="sidebar-heading" v-if="$auth.check()">
             Users
           </div>
           <li class="nav-item" v-if="$auth.check(2)">
@@ -38,8 +38,8 @@
             </div>
           </li>
 
-          <hr class="sidebar-divider">
-          <div class="sidebar-heading">
+          <hr class="sidebar-divider" v-if="$auth.check()">
+          <div class="sidebar-heading" v-if="$auth.check()">
             Expenses
           </div>
           <li class="nav-item" v-if="$auth.check()">
@@ -48,9 +48,13 @@
               <span>Expense Management</span>
             </a>
             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-              <div class="bg-white py-2 collapse-inner rounded" v-for="(route, key) in routes.admin" v-bind:key="route.path">
-                <router-link  :to="{ name : route.path }" :key="key" class="collapse-item">
+              <div class="bg-white py-2 collapse-inner rounded">
+                <router-link  :to="{ name : 'admin.expense.categories' }" class="collapse-item" v-if="$auth.check(2)">
                     Expense Categories
+                </router-link>
+
+                <router-link  :to="{ name : 'expense.index' }" class="collapse-item">
+                    Expense
                 </router-link>
               </div>
             </div>
